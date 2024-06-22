@@ -19,9 +19,15 @@ public class DatabaseConnection : IDatabaseConnection
     }
     
     public async Task<IDbConnection> GetConnection() {
-        if (_connection is null || _connection.State == ConnectionState.Broken ||
-            _connection.State == ConnectionState.Closed)
+        if (_connection is null)
         {
+            _connection = new SqlConnection(_options.ConnectionString);
+            await _connection.OpenAsync();
+        }
+        if (_connection is not null && (_connection.State == ConnectionState.Broken ||
+            _connection.State == ConnectionState.Closed))
+        {
+            await _connection.DisposeAsync();
             _connection = new SqlConnection(_options.ConnectionString);
             await _connection.OpenAsync();
         }
