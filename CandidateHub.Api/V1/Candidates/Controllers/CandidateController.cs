@@ -1,4 +1,5 @@
 using CandidateHub.Api.Commons.Exceptions;
+using CandidateHub.Api.Commons.Models;
 using CandidateHub.Api.V1.Candidates.Models;
 using CandidateHub.Api.V1.Candidates.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,5 +17,13 @@ public class CandidateController(ICandidateService candidateService) : Controlle
     {
         var candidate = await candidateService.CreateOrUpdate(model);
         return Ok(candidate);
+    }
+
+    [HttpGet]
+    [ProducesResponseType<PagedResult<CandidateModel>>(200)]
+    public async Task<IActionResult> GetByFilter([FromQuery]CandidateFilterModel model)
+    {
+        var result = await candidateService.GetByFilter(model);
+        return Ok(result);
     }
 }
