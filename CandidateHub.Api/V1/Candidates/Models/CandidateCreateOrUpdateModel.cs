@@ -14,7 +14,7 @@ public class CandidateCreateOrUpdateModel
     public string PhoneNumber { get; set; }
     [Required]
     [MaxLength(100)]
-    [RegularExpression(@"^[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]
+    [RegularExpression(@"^[a-zA-Z]+([a-zA-Z0-9_.]+[a-zA-Z0-9_]+)?[\@][a-zA-Z0-9]+(\.[a-zA-Z0-9]{2,})+$")]
     public string Email { get; set; }
     [MaxLength(50)]
     public string CallTimeInterval { get; set; }
