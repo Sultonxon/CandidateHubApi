@@ -10,6 +10,65 @@ namespace CandidateHub.Api.Tests.V1.Candidates.Repositories;
 
 public class CandidateRepositoryTests
 {
+    #region IsEmailExist
+
+    [Fact]
+    public async Task IsEmailExist_Tests()
+    {
+        var model = new CandidateCreateOrUpdateModel
+        {
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
+            LinkedinProfile = "https://linkedin.com/name"
+        };
+        
+        var mockConnection = new Mock<IDatabaseConnection>();
+        var mockLogger = new Mock<ILogger<CandidateRepository>>();
+
+        mockConnection.Setup(c => c.GetConnection()).ReturnsAsync(() =>
+        {
+            var c = new SqlConnection(GlobalTestConstants.ConnectionString);
+            c.Open();
+            return c;
+        });
+
+        var repository = new CandidateRepository(mockConnection.Object, mockLogger.Object);
+
+        Assert.False(await repository.IsEmailExist(model.Email));
+        await repository.Create(model);
+        Assert.True(await repository.IsEmailExist(model.Email));
+    }
+
+    #endregion
+    
+    
+    #region Update method tests
+
+    [Fact]
+    public async Task Update_InvalidEmail_UpdatesCandidate()
+    {
+        var model = new CandidateCreateOrUpdateModel
+        {
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
+            LinkedinProfile = "https://linkedin.com/name"
+        };
+        
+        var mockConnection = new Mock<IDatabaseConnection>();
+        var mockLogger = new Mock<ILogger<CandidateRepository>>();
+
+        mockConnection.Setup(c => c.GetConnection()).ReturnsAsync(() =>
+        {
+            var c = new SqlConnection(GlobalTestConstants.ConnectionString);
+            c.Open();
+            return c;
+        });
+
+        var repository = new CandidateRepository(mockConnection.Object, mockLogger.Object);
+        // Assert
+        var e = await Assert.ThrowsAsync<BusinessException>(async () => await repository.Update(model));
+    }
+    
     [Fact]
     public async Task Update_ValidEmail_UpdatesCandidate()
     {
@@ -45,8 +104,13 @@ public class CandidateRepositoryTests
         Assert.True(updatedCandidate.Email == model.Email);
 
     }
+    
+    #endregion
 
     private string GetRandomEmailPrefix() => Guid.NewGuid().ToString().Replace("-", "").ToLower();
+
+    #region Create method tests
+    
     [Fact]
     public async Task Create_ValidCandidate_CreatesCandidate()
     {
@@ -106,4 +170,5 @@ public class CandidateRepositoryTests
         // Act & Assert, indicate that candidate will not be created
         await Assert.ThrowsAsync<BusinessException>(async () => await repository.Create(model));
     }
+    #endregion
 }
