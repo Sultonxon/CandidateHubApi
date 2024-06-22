@@ -8,4 +8,5 @@ public interface ICandidateRepository
     Task<bool> IsEmailExist(string email);
     Task<Candidate> Create(CandidateCreateOrUpdateModel model);
     Task<Candidate> Update(CandidateCreateOrUpdateModel model);
+    Task<List<Candidate>> GetByFilter(CandidateFilterModel model);
 }

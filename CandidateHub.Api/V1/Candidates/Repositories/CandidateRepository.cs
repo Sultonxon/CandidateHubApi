@@ -1,4 +1,5 @@
 using System.Data;
+using System.Text;
 using CandidateHub.Api.Commons.Exceptions;
 using CandidateHub.Api.Data.MSSQL.Connections.Interfaces;
 using CandidateHub.Api.V1.Candidates.Entities;
@@ -116,4 +117,69 @@ FROM Candidates WHERE Email = @email";
         var candidates = await connection.QueryAsync<Candidate>(sql, param: new { email });
         return candidates.FirstOrDefault();
     }
+    
+    public async Task<List<Candidate>> GetByFilter(CandidateFilterModel model)
+    {
+        model.CheckOrSetDefaults();
+        var sql = @"
+SELECT [Id]
+      ,[FirstName]
+      ,[LastName]
+      ,[PhoneNumber]
+      ,[Email]
+      ,[CallTimeInterval]
+      ,[LinkedinProfile]
+      ,[GithubProfile]
+      ,[Comment]
+      ,[CreatedAt]
+      ,[UpdatedAt]
+  FROM [CandidateHubDatabase].[dbo].[Candidates]
+WHERE @where
+
+ORDER BY Id
+OFFSET (@Page - 1) * @Size ROWS
+FETCH NEXT @Size ROWS ONLY
+ 
+";
+
+        sql = sql.Replace("@where", GetQuery(model));
+
+        //throw new Exception(sql);
+        var connection = await _databaseConnection.GetConnection();
+
+        var result = await connection.QueryAsync<Candidate>(sql, model);
+        return result.ToList();
+    }
+
+    public string GetQuery(CandidateFilterModel model)
+    {
+        var filter = new StringBuilder();
+        filter.Append("1=1");
+        if (model.Id.HasValue && model.Id.Value != Guid.Empty)
+        {
+            filter.Append($" AND Id = @Id");
+        }
+
+        if (!string.IsNullOrEmpty(model.FirstName))
+        {
+            filter.Append($" AND LOWER(FirstName) LIKE {GetContainsPattern("@FirstName")}");
+        }
+        if (!string.IsNullOrEmpty(model.LastName))
+        {
+            filter.Append($" AND LOWER(LastName) LIKE {GetContainsPattern("@LastName")}");
+        }
+        
+        if (!string.IsNullOrEmpty(model.Email))
+        {
+            filter.Append($" AND LOWER(Email) LIKE {GetContainsPattern("@Email")}");
+        }
+        if (!string.IsNullOrEmpty(model.PhoneNumber))
+        {
+            filter.Append($" AND LOWER(PhoneNumber) LIKE {GetContainsPattern("@PhoneNumber")}");
+        }
+
+        return filter.ToString();
+    }
+
+    private string GetContainsPattern(string variableName) => $"('%' + LOWER({variableName}) + '%')";
 }

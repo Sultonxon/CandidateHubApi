@@ -170,4 +170,27 @@ public class CandidateRepositoryTests
         await Assert.ThrowsAsync<BusinessException>(async () => await repository.Create(model));
     }
     #endregion
+
+    [Fact]
+    public async Task GetByFilter_Test()
+    {
+        var mockConnection = new Mock<IDatabaseConnection>();
+        var mockLogger = new Mock<ILogger<CandidateRepository>>();
+
+        mockConnection.Setup(c => c.GetConnection()).ReturnsAsync(() =>
+        {
+            var c = new SqlConnection(GlobalTestConstants.ConnectionString);
+            c.Open();
+            return c;
+        });
+        
+        var repository = new CandidateRepository(mockConnection.Object, mockLogger.Object);
+
+        var result = await repository.GetByFilter(new CandidateFilterModel()
+        {
+            FirstName = "first"
+        });
+
+        Assert.NotNull(result);
+    }
 }
