@@ -52,7 +52,6 @@ INSERT INTO Candidates (
         }
         catch (Exception e)
         {
-            throw e;
             _logger.LogError(e,$"Error while creating candidate: {e.Message}");    
             transaction?.Rollback();
             throw new BusinessException("Internal error occured while creating Candidate, please try later", 500);
