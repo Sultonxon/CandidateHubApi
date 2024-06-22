@@ -9,4 +9,5 @@ public interface ICandidateRepository
     Task<Candidate> Create(CandidateCreateOrUpdateModel model);
     Task<Candidate> Update(CandidateCreateOrUpdateModel model);
     Task<List<Candidate>> GetByFilter(CandidateFilterModel model);
+    Task<int> GetCount(CandidateFilterModel model);
 }

@@ -151,6 +151,20 @@ FETCH NEXT @Size ROWS ONLY
         return result.ToList();
     }
 
+    public async Task<int> GetCount(CandidateFilterModel model)
+    {
+        var sql = @"
+SELECT COUNT(Id)
+  FROM [CandidateHubDatabase].[dbo].[Candidates]
+WHERE @where 
+";
+
+        sql = sql.Replace("@where", GetQuery(model));
+        
+        var connection = await _databaseConnection.GetConnection();
+        return await connection.ExecuteScalarAsync<int>(sql, model);
+    }
+
     public string GetQuery(CandidateFilterModel model)
     {
         var filter = new StringBuilder();

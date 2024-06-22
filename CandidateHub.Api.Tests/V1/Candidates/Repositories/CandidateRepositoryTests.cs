@@ -193,4 +193,27 @@ public class CandidateRepositoryTests
 
         Assert.NotNull(result);
     }
+
+    [Fact]
+    public async Task GetCount_Test()
+    {
+        var mockConnection = new Mock<IDatabaseConnection>();
+        var mockLogger = new Mock<ILogger<CandidateRepository>>();
+
+        mockConnection.Setup(c => c.GetConnection()).ReturnsAsync(() =>
+        {
+            var c = new SqlConnection(GlobalTestConstants.ConnectionString);
+            c.Open();
+            return c;
+        });
+        
+        var repository = new CandidateRepository(mockConnection.Object, mockLogger.Object);
+
+        var result = await repository.GetCount(new CandidateFilterModel()
+        {
+            FirstName = "first"
+        });
+
+        Assert.True(result >= 0);
+    }
 }
