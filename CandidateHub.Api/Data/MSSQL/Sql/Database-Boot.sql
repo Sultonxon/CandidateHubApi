@@ -27,12 +27,13 @@ CREATE TABLE Candidates (
     FirstName NVARCHAR(50) NOT NULL,
     LastName NVARCHAR(50) NOT NULL,
     PhoneNumber NVARCHAR(20),
-    Email NVARCHAR(100),
+    Email NVARCHAR(100) NOT NULL UNIQUE,
     CallTimeInterval NVARCHAR(50),
     LinkedinProfile NVARCHAR(255),
     GithubProfile NVARCHAR(255),
     Comment NVARCHAR(MAX),
     CreatedAt DATETIME NOT NULL,
     UpdatedAt DATETIME NULL
-); 
-      
+);
+
+CREATE UNIQUE INDEX IX_Candidates_Email ON Candidates(Email);
