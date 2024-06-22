@@ -16,7 +16,6 @@
     <ItemGroup>
       <Folder Include="Commons\Extensions\" />
       <Folder Include="V1\Candidates\Controllers\" />
-      <Folder Include="V1\Candidates\Repositories\Interfaces\" />
       <Folder Include="V1\Candidates\Services\Interfaces\" />
     </ItemGroup>
 
