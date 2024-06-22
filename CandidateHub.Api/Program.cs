@@ -1,8 +1,11 @@
+using ServiceLocator;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddServiceLocator<Program>();
 
 var app = builder.Build();
 

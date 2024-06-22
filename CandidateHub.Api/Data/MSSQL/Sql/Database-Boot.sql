@@ -31,6 +31,8 @@ CREATE TABLE Candidates (
     CallTimeInterval NVARCHAR(50),
     LinkedinProfile NVARCHAR(255),
     GithubProfile NVARCHAR(255),
-    Comment NVARCHAR(1000)
-);
-
+    Comment NVARCHAR(MAX),
+    CreatedAt DATETIME NOT NULL,
+    UpdatedAt DATETIME NULL
+); 
+      
