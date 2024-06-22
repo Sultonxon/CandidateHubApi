@@ -17,7 +17,7 @@ public class CandidateRepositoryTests
     {
         var model = new CandidateCreateOrUpdateModel
         {
-            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{Helpers.GetRandomEmailPrefix()}@gmail.com",
             CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
             LinkedinProfile = "https://linkedin.com/name"
         };
@@ -49,7 +49,7 @@ public class CandidateRepositoryTests
     {
         var model = new CandidateCreateOrUpdateModel
         {
-            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{Helpers.GetRandomEmailPrefix()}@gmail.com",
             CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
             LinkedinProfile = "https://linkedin.com/name"
         };
@@ -107,7 +107,6 @@ public class CandidateRepositoryTests
     
     #endregion
 
-    private string GetRandomEmailPrefix() => Guid.NewGuid().ToString().Replace("-", "").ToLower();
 
     #region Create method tests
     
@@ -117,7 +116,7 @@ public class CandidateRepositoryTests
         // Arrange
         var model = new CandidateCreateOrUpdateModel
         {
-            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{Helpers.GetRandomEmailPrefix()}@gmail.com",
             CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
             LinkedinProfile = "https://linkedin.com/name"
         };
@@ -148,7 +147,7 @@ public class CandidateRepositoryTests
         // Arrange
         var model = new CandidateCreateOrUpdateModel
         {
-            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{GetRandomEmailPrefix()}@gmail.com",
+            FirstName = "firstName", LastName = "Last Name", PhoneNumber = "+1223455666", Email = $"testemail{Helpers.GetRandomEmailPrefix()}@gmail.com",
             CallTimeInterval = "10:00-19:00", GithubProfile = "https://github.com/name",
             LinkedinProfile = "https://linkedin.com/name"
         };

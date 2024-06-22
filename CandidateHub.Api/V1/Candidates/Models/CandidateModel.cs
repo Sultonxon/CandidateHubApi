@@ -1,3 +1,4 @@
+using CandidateHub.Api.Commons.Exceptions;
 using CandidateHub.Api.V1.Candidates.Entities;
 
 namespace CandidateHub.Api.V1.Candidates.Models;
